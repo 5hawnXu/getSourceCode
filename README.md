@@ -22,7 +22,13 @@ Supported Chain Platforms:
 
 Get code by tx only supports:
 
-    BSC|ETH|BOBA|ARBI|HECO
+    arbi|arbi-nova|avax|base|boba|bsc
+    cronos|eth|fantom|gnosis|heco|klaytn
+    moonbeam|moonriver|opt|poly||ronin
+
+    arbi-testnet|avax-testnet|base-testnet
+    boba-testnet|bsc-testnet|ftm-testnet
+    goerli|opt-testnet|poly-testnet
 
 # Install
 
