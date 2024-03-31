@@ -44,26 +44,26 @@ For example:
 
 or
 
-    getCode -n eth -a 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 -p 127.0.0.1:7890 -o myFolder
+    getCode -n eth -a 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 -p 127.0.0.1:7890
 
 The command execution result is as follows:
 
     [root@hxzy test]# getCode -n bsc -a 0xb51eaa437AC67A631e2FEca0a18dA7a6391c0D07
-    0-0: SynthereumManager/deploy/@openzeppelin/contracts/access/AccessControl.sol.sol
-    0-1: SynthereumManager/deploy/@openzeppelin/contracts/access/IAccessControl.sol.sol
-    0-2: SynthereumManager/deploy/@openzeppelin/contracts/utils/Context.sol.sol
-    0-3: SynthereumManager/deploy/@openzeppelin/contracts/utils/Strings.sol.sol
-    0-4: SynthereumManager/deploy/@openzeppelin/contracts/utils/introspection/ERC165.sol.sol
-    0-5: SynthereumManager/deploy/@openzeppelin/contracts/utils/introspection/IERC165.sol.sol
-    0-6: SynthereumManager/deploy/@openzeppelin/contracts/access/AccessControlEnumerable.sol.sol
-    0-7: SynthereumManager/deploy/@openzeppelin/contracts/access/IAccessControlEnumerable.sol.sol
-    0-8: SynthereumManager/deploy/@openzeppelin/contracts/utils/structs/EnumerableSet.sol.sol
-    0-9: SynthereumManager/deploy/contracts/core/Manager.sol.sol
-    0-10: SynthereumManager/deploy/contracts/core/interfaces/IFinder.sol.sol
-    0-11: SynthereumManager/deploy/contracts/core/interfaces/IManager.sol.sol
-    0-12: SynthereumManager/deploy/contracts/common/interfaces/IEmergencyShutdown.sol.sol
-    0-13: SynthereumManager/deploy/contracts/core/Constants.sol.sol
-    0-14: SynthereumManager/deploy/contracts/core/Finder.sol.sol
+    0-0: SynthereumManager/deploy/@openzeppelin/contracts/access/AccessControl.sol
+    0-1: SynthereumManager/deploy/@openzeppelin/contracts/access/IAccessControl.sol
+    0-2: SynthereumManager/deploy/@openzeppelin/contracts/utils/Context.sol
+    0-3: SynthereumManager/deploy/@openzeppelin/contracts/utils/Strings.sol
+    0-4: SynthereumManager/deploy/@openzeppelin/contracts/utils/introspection/ERC165.sol
+    0-5: SynthereumManager/deploy/@openzeppelin/contracts/utils/introspection/IERC165.sol
+    0-6: SynthereumManager/deploy/@openzeppelin/contracts/access/AccessControlEnumerable.sol
+    0-7: SynthereumManager/deploy/@openzeppelin/contracts/access/IAccessControlEnumerable.sol
+    0-8: SynthereumManager/deploy/@openzeppelin/contracts/utils/structs/EnumerableSet.sol
+    0-9: SynthereumManager/deploy/contracts/core/Manager.sol
+    0-10: SynthereumManager/deploy/contracts/core/interfaces/IFinder.sol
+    0-11: SynthereumManager/deploy/contracts/core/interfaces/IManager.sol
+    0-12: SynthereumManager/deploy/contracts/common/interfaces/IEmergencyShutdown.sol
+    0-13: SynthereumManager/deploy/contracts/core/Constants.sol
+    0-14: SynthereumManager/deploy/contracts/core/Finder.sol
 
     Address => ContractName:
     0xb51eaa437AC67A631e2FEca0a18dA7a6391c0D07      SynthereumManager
