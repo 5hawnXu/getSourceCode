@@ -40,7 +40,7 @@
 
 # 使用方法
 
-    getCode [-h] [-i 输入文件] [-o 输出目录] [-a 合约地址] [-n 网络] [-k 密钥] [-p 代理] [-t 交易哈希] [-u] [-v] [--apikey API密钥]
+    getCode [-h] [-i 输入文件] [-o 输出目录] [-a 合约地址] [-n 网络] [-k 密钥] [-p 代理] [-t 交易哈希] [-u] [-v] [--apikey API密钥] [--chainid 链ID]
 
 示例：
 
@@ -148,6 +148,7 @@ OKEx 相关链（okt / okb / okt-testnet）需要手动提供 apikey，获取方
     -u               检查是否有新版本可更新
     -v               显示版本号
     --apikey APIKEY  OKEx 相关链所需的 apikey
+    --chainid CHAINID  直接指定链 ID，无需输入完整链名
 
 # 联系方式
 

@@ -50,13 +50,21 @@ def main():
     try:
         if parser.proxy:
             set_configs(parser.proxy, ctx)
+        # Resolve --chainid to network name if provided
+        network = parser.network
+        if parser.chainid:
+            if parser.chainid in chain_id_to_name:
+                network = chain_id_to_name[parser.chainid]
+            else:
+                network = f"chain-{parser.chainid}"
+                chain_to_id[network] = parser.chainid
         if parser.update:
             check_update(name, current_version)
             sys.exit(0)
         elif parser.inputFile != "" or parser.address != "":
-            get_code(parser.inputFile, parser.outputFolder, parser.address, parser.network.lower(), parser.key, ctx)
+            get_code(parser.inputFile, parser.outputFolder, parser.address, network.lower(), parser.key, ctx)
         elif parser.txhash != "":
-            get_addresses_by_tx(parser.txhash, parser.network.lower(), parser.outputFolder, ctx)
+            get_addresses_by_tx(parser.txhash, network.lower(), parser.outputFolder, ctx)
         else:
             print("Invalid command")
         if ctx.contract_info != {}:

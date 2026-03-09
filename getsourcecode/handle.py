@@ -13,6 +13,16 @@ def check_is_duplicate_file(file_path, contract_code):
     return False
 
 
+def get_unique_contract_folder(base_name, address, ctx=None):
+    """Generate a unique folder name when contract names conflict in the same batch."""
+    target = ctx.contract_info if ctx else contract_info
+    for addr, name in target.items():
+        if name == base_name and addr.lower() != address.lower():
+            short_addr = address[:6]
+            return f"{base_name}_{short_addr}"
+    return base_name
+
+
 def save_contract_file(contract_folder, original_name, code_content):
     """
     Generic function to save contract files.
@@ -33,14 +43,12 @@ def save_contract_file(contract_folder, original_name, code_content):
     file_path = os.path.join(contract_folder, contract_name)
     while os.path.exists(file_path):
         exist_file = True
-        base_name = original_name
-        if "_" in base_name:
-            base_name = base_name.split('_')[0]
-        else:
-            base_name = base_name.split('.')[0]
-        # Get file extension
-        ext = os.path.splitext(original_name)[1] or ".sol"
-        contract_name = f"{base_name}_{index}{ext}"
+        dir_part = os.path.dirname(original_name)
+        file_part = os.path.basename(original_name)
+        name_without_ext, ext = os.path.splitext(file_part)
+        if not ext:
+            ext = ".sol"
+        contract_name = os.path.join(dir_part, f"{name_without_ext}_{index}{ext}")
         file_path = os.path.join(contract_folder, contract_name)
         index += 1
 
@@ -84,8 +92,9 @@ def send_tron(addresses, output_folder, ctx=None):
             req = tron_requests(address, api_url)
             if json.loads(req.text)["code"] == 200:
                 contract_code = json.loads(req.text)["data"]["contract_code"]
-                contract_folder = json.loads(req.text)["data"][
-                    "contract_name"] if output_folder == "" else output_folder
+                contract_folder = get_unique_contract_folder(
+                    json.loads(req.text)["data"]["contract_name"], address, ctx
+                ) if output_folder == "" else output_folder
                 make_dir(contract_folder)
                 sub_index = 0
                 save_info(address, json.loads(req.text)["data"]["contract_name"], ctx)
@@ -138,7 +147,7 @@ def send_okex(addresses, output_folder, apikey, network, ctx=None):
                         "name": contract_main_name,
                         "source_code": data.get("contractSource", ""),
                     }]
-                contract_folder = contract_main_name if output_folder == "" else output_folder
+                contract_folder = get_unique_contract_folder(contract_main_name, address, ctx) if output_folder == "" else output_folder
                 make_dir(contract_folder)
                 save_info(address, contract_main_name, ctx)
                 sub_index = 0
@@ -161,7 +170,7 @@ def send_okex(addresses, output_folder, apikey, network, ctx=None):
                         ctx.proxy_contract[address] = impl
                     else:
                         proxy_contract[address] = impl
-                    send_okex(impl_addresses, "impl_contract", apikey, network, ctx)
+                    send_okex(impl_addresses, os.path.join(contract_folder, "Implementation"), apikey, network, ctx)
     except Exception as e:
         handle_exception(e)
 
@@ -186,7 +195,7 @@ def send_klaytn(addresses, output_folder, network, ctx=None):
             contract_name = code['contractName'] + ".sol"
             code_temp = code["contractSource"].replace('\r\n', '\n')
             save_info(address, code['contractName'], ctx)
-            contract_folder = code['contractName'] if output_folder == "" else output_folder
+            contract_folder = get_unique_contract_folder(code['contractName'], address, ctx) if output_folder == "" else output_folder
             make_dir(contract_folder)
             c_idx = ctx.contract_index if ctx else contract_index
             saved_name = save_contract_file(contract_folder, contract_name, code_temp)
@@ -239,7 +248,7 @@ def send_ronin(addresses, output_folder, network, ctx=None):
                 url = f"https://explorer-kintsugi.roninchain.com/v2/2021/contract/{address}/src"
             ronin_req = ronin_request(url, proxies)
             save_info(address, contract_name, ctx)
-            contract_folder = contract_name if output_folder == "" else output_folder
+            contract_folder = get_unique_contract_folder(contract_name, address, ctx) if output_folder == "" else output_folder
             make_dir(contract_folder)
             sub_index = 0
             c_idx = ctx.contract_index if ctx else contract_index
@@ -260,7 +269,7 @@ def send_ronin(addresses, output_folder, network, ctx=None):
                     ctx.proxy_contract[address] = proxy_address
                 else:
                     proxy_contract[address] = proxy_address
-                send_ronin(proxy_addresses, output_folder, network, ctx)
+                send_ronin(proxy_addresses, os.path.join(contract_folder, "Implementation"), network, ctx)
     except Exception as e:
         handle_exception(e)
 
@@ -287,7 +296,7 @@ def send_zksync_era(addresses, output_folder, network, ctx=None):
             zksync_req = zksync_request(url, proxies)
             main_contract_name = zksync_req['request']['contractName'].split(".sol:")[1]
             save_info(address, main_contract_name, ctx)
-            contract_folder = main_contract_name if output_folder == "" else output_folder
+            contract_folder = get_unique_contract_folder(main_contract_name, address, ctx) if output_folder == "" else output_folder
             make_dir(contract_folder)
             sub_index = 0
             c_idx = ctx.contract_index if ctx else contract_index
@@ -357,7 +366,7 @@ def export_result(result, output_folder, network, address, api_key, ctx=None):
         source_code = result['SourceCode'].replace("\r\n", "\n")
         if (contract_suffix + '":{"content":') in source_code:
             is_multi_file = True
-        contract_folder = main_contract_name if output_folder == "" else output_folder
+        contract_folder = get_unique_contract_folder(main_contract_name, address, ctx) if output_folder == "" else output_folder
         make_dir(contract_folder)
         c_idx = ctx.contract_index if ctx else contract_index
 
@@ -402,7 +411,7 @@ def export_result(result, output_folder, network, address, api_key, ctx=None):
                 else:
                     proxy_contract[address] = impl
                 impl_addresses.append(impl)
-                send_request(impl_addresses, "Implementation", network, api_key, ctx)
+                send_request(impl_addresses, os.path.join(contract_folder, "Implementation"), network, api_key, ctx)
         elif result['Implementation'] != "":
             # Handle block explorer API exception returns to avoid infinite loops
             if result['Implementation'].lower() == address.lower():
@@ -412,6 +421,6 @@ def export_result(result, output_folder, network, address, api_key, ctx=None):
             else:
                 proxy_contract[address] = result['Implementation']
             impl_addresses.append(result['Implementation'])
-            send_request(impl_addresses, "Implementation", network, api_key, ctx)
+            send_request(impl_addresses, os.path.join(contract_folder, "Implementation"), network, api_key, ctx)
     except Exception as e:
         handle_exception(e)

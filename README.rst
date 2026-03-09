@@ -59,7 +59,7 @@ Usage
 
 ::
 
-   getCode [-h] [-i INPUTFILE] [-o OUTPUTFOLDER] [-a ADDRESS] [-n NETWORK] [-k KEY] [-p PROXY] [-t TXHASH] [-u] [-v] [--apikey APIKEY]
+   getCode [-h] [-i INPUTFILE] [-o OUTPUTFOLDER] [-a ADDRESS] [-n NETWORK] [-k KEY] [-p PROXY] [-t TXHASH] [-u] [-v] [--apikey APIKEY] [--chainid CHAINID]
 
 For example:
 
@@ -214,7 +214,7 @@ Parameter description:
     -u               Check to see if a new version is available to update.
     -v               Show version
     --apikey APIKEY  The apikey required by the okex related chain.
-
+    --chainid CHAINID  Specify chain ID directly instead of chain name.
 
 Contact
 =======

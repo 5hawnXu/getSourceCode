@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "getsourcecode"
+version = "3.0.1"
+authors = [
+    { name = "Shawn Xu", email = "support@hxzy.me" }
+]
+description = "Simple way to get contract source code verified on blockchain explorer."
+readme = "README.rst"
+requires-python = ">=3.8"
+dependencies = [
+    "tenacity",
+    "packaging",
+]
+
+[project.urls]
+Homepage = "https://github.com/5hawnXu/getsourcecode"
+
+[project.scripts]
+getCode = "getsourcecode:main"
+
+[tool.setuptools]
+packages = ["getsourcecode"]

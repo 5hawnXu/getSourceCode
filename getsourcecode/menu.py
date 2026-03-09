@@ -39,5 +39,6 @@ def argparse_menu():
     parser.add_argument('-v', action='version', version=current_version, help='Show current version.')
     parser.add_argument('--hash', action="store_true", dest='contractHash', help='Show contract hash data.')
     parser.add_argument('--apikey', default='', dest='apikey', help='The apikey required by the okex related chain.')
+    parser.add_argument('--chainid', default=0, type=int, dest='chainid', help='Specify chain ID directly instead of chain name.')
 
     return parser.parse_args()
